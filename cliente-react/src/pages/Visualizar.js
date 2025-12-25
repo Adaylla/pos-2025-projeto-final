@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 
 function Visualizar() {
@@ -43,24 +42,36 @@ function Visualizar() {
     <div className="page-container">
       <h2 className="page-title">Visualize todos os itens aqui</h2>
 
-      <h3 style={{ marginTop: "20px", color: "#2563eb" }}>Itens</h3>
+      <h3 style={{ marginTop: "20px", color: "#2563eb" }}>Itens ({itens.length})</h3>
       <div className="cards-container">
-        {itens.length === 0 && <p>Nenhum item cadastrado.</p>}
+        {itens.length === 0 && <p className="empty-state-text">Nenhum item cadastrado.</p>}
         {itens.map(item => (
           <div key={item.id} className="card">
             <h4 className="card-title">{item.nome}</h4>
             <p className="card-description">{item.descricao}</p>
+            {item.categorias && item.categorias.length > 0 && (
+              <div style={{ marginTop: "10px", fontSize: "14px", color: "#c95494" }}>
+                <strong>Categorias:</strong> {item.categorias.map(c => c.titulo).join(", ")}
+              </div>
+            )}
           </div>
         ))}
       </div>
 
-      <h3 style={{ marginTop: "40px", color: "#c95494" }}>Categorias</h3>
+      <h3 style={{ marginTop: "40px", color: "#c95494" }}>Categorias ({categorias.length})</h3>
       <div className="cards-container">
-        {categorias.length === 0 && <p>Nenhuma categoria cadastrada.</p>}
+        {categorias.length === 0 && <p className="empty-state-text">Nenhuma categoria cadastrada.</p>}
         {categorias.map(cat => (
           <div key={cat.id} className="card">
-            <h4 className="card-title">{cat.nome}</h4>
-            <p className="card-description">{cat.descricao}</p>
+            <h4 className="card-title">{cat.titulo}</h4>
+            <p className="card-description">
+              {cat.itens?.length || 0} {cat.itens?.length === 1 ? 'item' : 'itens'} nesta categoria
+            </p>
+            {cat.itens && cat.itens.length > 0 && (
+              <div style={{ marginTop: "10px", fontSize: "14px", color: "#2563eb" }}>
+                <strong>Itens:</strong> {cat.itens.map(i => i.nome).join(", ")}
+              </div>
+            )}
           </div>
         ))}
       </div>
