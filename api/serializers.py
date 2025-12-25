@@ -7,6 +7,15 @@ class ItemSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class CategoriaSerializer(serializers.ModelSerializer):
+    itens = ItemSerializer(many=True, read_only=True)
+    
+    itens_ids = serializers.PrimaryKeyRelatedField(
+        many=True,
+        write_only=True,
+        queryset=Item.objects.all(),
+        source='itens'
+    )
+    
     class Meta:
         model = Categoria
-        fields = '__all__'
+        fields = ['id', 'titulo', 'itens', 'itens_ids']
